@@ -1,0 +1,5 @@
+train: datasets/pano630/train.txt
+val: datasets/pano630/val.txt
+test: datasets/pano630/val.txt
+nc: 4
+names: ['13','23','33','43']
