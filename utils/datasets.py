@@ -813,8 +813,8 @@ class LoadImagesAndLabels(Dataset):
 def create_folder(path='./new'):
     # Create folder
     if os.path.exists(path):
-        shutil.rmtree(path)  # delete output folder
-    os.makedirs(path)  # make new output folder
+        shutil.rmtree(path)  # delete output1 folder
+    os.makedirs(path)  # make new output1 folder
 
 
 def flatten_recursive(path=DATASETS_DIR / 'coco128'):

@@ -122,9 +122,9 @@ def export_onnx(model, im, file, opset, train, dynamic, simplify, prefix=colorst
                           training=torch.onnx.TrainingMode.TRAINING if train else torch.onnx.TrainingMode.EVAL,
                           do_constant_folding=not train,
                           input_names=['images'],
-                          output_names=['output'],
+                          output_names=['output1'],
                           dynamic_axes={'images': {0: 'batch', 2: 'height', 3: 'width'},  # shape(1,3,640,640)
-                                        'output': {0: 'batch', 1: 'anchors'}  # shape(1,25200,85)
+                                        'output1': {0: 'batch', 1: 'anchors'}  # shape(1,25200,85)
                                         } if dynamic else None)
 
         # Checks
@@ -231,7 +231,7 @@ def export_engine(model, im, file, train, half, simplify, workspace=4, verbose=F
         for inp in inputs:
             LOGGER.info(f'{prefix}\tinput "{inp.name}" with shape {inp.shape} and dtype {inp.dtype}')
         for out in outputs:
-            LOGGER.info(f'{prefix}\toutput "{out.name}" with shape {out.shape} and dtype {out.dtype}')
+            LOGGER.info(f'{prefix}\toutput1 "{out.name}" with shape {out.shape} and dtype {out.dtype}')
 
         half &= builder.platform_has_fast_fp16
         LOGGER.info(f'{prefix} building FP{16 if half else 32} engine in {f}')
@@ -456,8 +456,8 @@ def run(data=ROOT / 'data/coco128.yaml',  # 'dataset.yaml path'
 
     for _ in range(2):
         y = model(im)  # dry runs
-    shape = tuple(y[0].shape)  # model output shape
-    LOGGER.info(f"\n{colorstr('PyTorch:')} starting from {file} with output shape {shape} ({file_size(file):.1f} MB)")
+    shape = tuple(y[0].shape)  # model output1 shape
+    LOGGER.info(f"\n{colorstr('PyTorch:')} starting from {file} with output1 shape {shape} ({file_size(file):.1f} MB)")
 
     # Exports
     f = [''] * 10  # exported filenames

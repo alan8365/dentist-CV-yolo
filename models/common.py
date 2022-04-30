@@ -411,12 +411,12 @@ class DetectMultiBackend(nn.Module):
             request = self.executable_network.requests[0]  # inference request
             request.set_blob(blob_name='images', blob=self.ie.Blob(desc, im))  # name=next(iter(request.input_blobs))
             request.infer()
-            y = request.output_blobs['output'].buffer  # name=next(iter(request.output_blobs))
+            y = request.output_blobs['output1'].buffer  # name=next(iter(request.output_blobs))
         elif self.engine:  # TensorRT
             assert im.shape == self.bindings['images'].shape, (im.shape, self.bindings['images'].shape)
             self.binding_addrs['images'] = int(im.data_ptr())
             self.context.execute_v2(list(self.binding_addrs.values()))
-            y = self.bindings['output'].data
+            y = self.bindings['output1'].data
         elif self.coreml:  # CoreML
             im = im.permute(0, 2, 3, 1).cpu().numpy()  # torch BCHW to numpy BHWC shape(1,320,192,3)
             im = Image.fromarray((im[0] * 255).astype('uint8'))
@@ -427,7 +427,7 @@ class DetectMultiBackend(nn.Module):
                 conf, cls = y['confidence'].max(1), y['confidence'].argmax(1).astype(np.float)
                 y = np.concatenate((box, conf.reshape(-1, 1), cls.reshape(-1, 1)), 1)
             else:
-                y = y[sorted(y)[-1]]  # last output
+                y = y[sorted(y)[-1]]  # last output1
         else:  # TensorFlow (SavedModel, GraphDef, Lite, Edge TPU)
             im = im.permute(0, 2, 3, 1).cpu().numpy()  # torch BCHW to numpy BHWC shape(1,320,192,3)
             if self.saved_model:  # SavedModel

@@ -216,7 +216,7 @@ class TFDetect(keras.layers.Layer):
             self.grid[i] = self._make_grid(nx, ny)
 
     def call(self, inputs):
-        z = []  # inference output
+        z = []  # inference output1
         x = []
         for i in range(self.nl):
             x.append(self.m[i](inputs[i]))
@@ -346,7 +346,7 @@ class TFModel:
                 x = y[m.f] if isinstance(m.f, int) else [x if j == -1 else y[j] for j in m.f]  # from earlier layers
 
             x = m(x)  # run
-            y.append(x if m.i in self.savelist else None)  # save output
+            y.append(x if m.i in self.savelist else None)  # save output1
 
         # Add TensorFlow NMS
         if tf_nms:
@@ -363,7 +363,7 @@ class TFModel:
                     boxes, scores, topk_per_class, topk_all, iou_thres, conf_thres, clip_boxes=False)
                 return nms, x[1]
 
-        return x[0]  # output only first tensor [1,6300,85] = [xywh, conf, class0, class1, ...]
+        return x[0]  # output1 only first tensor [1,6300,85] = [xywh, conf, class0, class1, ...]
         # x = x[0][0]  # [x(1,6300,85), ...] to x(6300,85)
         # xywh = x[..., :4]  # x(6300,4) boxes
         # conf = x[..., 4:5]  # x(6300,1) confidences

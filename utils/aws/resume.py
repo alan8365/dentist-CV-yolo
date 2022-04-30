@@ -35,6 +35,6 @@ for last in path.rglob('*/**/last.pt'):
     else:  # single-GPU
         cmd = f'python train.py --resume {last}'
 
-    cmd += ' > /dev/null 2>&1 &'  # redirect output to dev/null and run in daemon thread
+    cmd += ' > /dev/null 2>&1 &'  # redirect output1 to dev/null and run in daemon thread
     print(cmd)
     os.system(cmd)

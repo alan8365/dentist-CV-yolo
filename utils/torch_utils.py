@@ -113,7 +113,7 @@ def profile(input, ops, n=10, device=None):
     results = []
     device = device or select_device()
     print(f"{'Params':>12s}{'GFLOPs':>12s}{'GPU_mem (GB)':>14s}{'forward (ms)':>14s}{'backward (ms)':>14s}"
-          f"{'input':>24s}{'output':>24s}")
+          f"{'input':>24s}{'output1':>24s}")
 
     for x in input if isinstance(input, list) else [input]:
         x = x.to(device)

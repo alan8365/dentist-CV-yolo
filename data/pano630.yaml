@@ -1,5 +1,5 @@
-train: datasets/pano630/train.txt
-val: datasets/pano630/val.txt
-test: datasets/pano630/val.txt
-nc: 4
-names: ['13','23','33','43']
+train: datasets/pano_2/train.txt
+val: datasets/pano_2/val.txt
+test: datasets/pano_2/test.txt
+nc: 18
+names: [ '13', '17', '23', '27', '33', '37', '43', '47', 'Imp', 'R.R', 'bridge', 'caries', 'crown', 'embedded', 'endo', 'filling', 'impacted', 'post' ]

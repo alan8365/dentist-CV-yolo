@@ -43,11 +43,11 @@ class Detect(nn.Module):
         self.grid = [torch.zeros(1)] * self.nl  # init grid
         self.anchor_grid = [torch.zeros(1)] * self.nl  # init anchor grid
         self.register_buffer('anchors', torch.tensor(anchors).float().view(self.nl, -1, 2))  # shape(nl,na,2)
-        self.m = nn.ModuleList(nn.Conv2d(x, self.no * self.na, 1) for x in ch)  # output conv
+        self.m = nn.ModuleList(nn.Conv2d(x, self.no * self.na, 1) for x in ch)  # output1 conv
         self.inplace = inplace  # use in-place ops (e.g. slice assignment)
 
     def forward(self, x):
-        z = []  # inference output
+        z = []  # inference output1
         for i in range(self.nl):
             x[i] = self.m[i](x[i])  # conv
             bs, _, ny, nx = x[i].shape  # x(bs,255,20,20) to x(bs,3,20,20,85)
@@ -147,7 +147,7 @@ class Model(nn.Module):
             if profile:
                 self._profile_one_layer(m, x, dt)
             x = m(x)  # run
-            y.append(x if m.i in self.save else None)  # save output
+            y.append(x if m.i in self.save else None)  # save output1
             if visualize:
                 feature_visualization(x, m.type, m.i, save_dir=visualize)
         return x
@@ -259,7 +259,7 @@ def parse_model(d, ch):  # model_dict, input_channels(3)
         if m in [Conv, GhostConv, Bottleneck, GhostBottleneck, SPP, SPPF, DWConv, MixConv2d, Focus, CrossConv,
                  BottleneckCSP, C3, C3TR, C3SPP, C3Ghost]:
             c1, c2 = ch[f], args[0]
-            if c2 != no:  # if not output
+            if c2 != no:  # if not output1
                 c2 = make_divisible(c2 * gw, 8)
 
             args = [c1, c2, *args[1:]]

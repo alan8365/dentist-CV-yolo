@@ -1,0 +1,5 @@
+train: datasets/pano_2_anomaly/train.txt
+val: datasets/pano_2_anomaly/val.txt
+test: datasets/pano_2_anomaly/test.txt
+nc: 10
+names: [ 'Imp', 'R.R', 'bridge', 'caries', 'crown', 'embedded', 'endo', 'filling', 'impacted', 'post' ]
